@@ -7,15 +7,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 public class InventoryController {
 
-    @GetMapping("api/v1/beer/{beerId}/inventory")
-    public List<BeerInventoryDto> listBeersById(@PathVariable UUID beerId) {
+    @GetMapping({"api/v1/beer/{beerId}/inventory","/inventory-failover"})
+    public List<BeerInventoryDto> listBeersById(@PathVariable Optional<UUID> beerId) {
         BeerInventoryDto beerInventoryDto = BeerInventoryDto.builder()
-                .beerId(UUID.randomUUID())
+                .beerId(beerId.orElse(UUID.randomUUID()))
                 .quantityOnHand(999)
                 .upc("123456")
                 .id(UUID.randomUUID())
